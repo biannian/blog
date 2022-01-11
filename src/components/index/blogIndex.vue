@@ -6,10 +6,10 @@
       <div id="titleRecommend" @click="clickRecommend" class="active">推 荐</div>
     </div>
   </div>
-      <div id="follow" v-show="isShowFollow">
+      <div id="follow" style="margin-top: 60px;" v-show="isShowFollow">
         <blog-follow></blog-follow>
       </div>
-      <div id="recommend" v-show="!isShowFollow">
+      <div id="recommend" style="margin-top: 60px;" v-show="!isShowFollow">
         <some-blogs></some-blogs>
       </div>
     </div>
@@ -45,7 +45,7 @@
 
 <style >
   .top-nav {
-    opacity: 98%;
+    opacity: 0.9;
     width: 100%;
     position: fixed;
     top: 0;

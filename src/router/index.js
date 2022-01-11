@@ -14,20 +14,32 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: index
+      component: index,
+      meta:{
+        tx:2
+      }
     },
     {
       path: '/myIndex',
       name: 'myIndex',
-      component: myIndex
+      component: myIndex,
+      meta:{
+        tx:2
+      }
     }, {
       path: '/someBlogs',
       name: 'someBlogs',
-      component: someBlogs
+      component: someBlogs,
+      meta:{
+        tx:1
+      }
     }, {
       path: '/blogIndex',
       name: 'blogIndex',
-      component: blogIndex
+      component: blogIndex,
+      meta:{
+        tx:2
+      }
     }, {
       path: '/blogFollow',
       name: 'blogFollow',
@@ -36,7 +48,10 @@ export default new Router({
     {
       path: '/blogDetail',
       name: 'blogDetail',
-      component: blogDetail
+      component: blogDetail,
+      meta:{
+        tx:1
+      }
     },
   ]
 })
