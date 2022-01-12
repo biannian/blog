@@ -1,67 +1,115 @@
 <template>
   <div>
-    <div class="top">
-      <div class="top-na">
-        <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 5px"><i
-          class="el-icon-arrow-left"></i>首页
+    <div id="background" style="transition: 0.5s;">
+      <div class="top">
+        <div class="top-na">
+          <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 5px"><i
+            class="el-icon-arrow-left"></i>首页
+          </div>
+          <div style="font-size: 15px;width: 84%;text-align:center;font-weight: 600">微博正文</div>
         </div>
-        <div style="font-size: 15px;width: 84%;text-align:center;font-weight: 600">微博正文</div>
+      </div>
+      <div>
+
+        <div v-for="i in 1">
+          <div>
+            <div style="width: 42px;padding: 0 10px 0 15px;float: left">
+              <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            </div>
+            <p style="font-size: 15px; ">遍念</p>
+            <p style="font-size: 12px;color: #909399">17小时前 来自iPhone客户端</p>
+          </div>
+          <div>
+            <div style="text-align: left;margin: 5px 12px 0  15px; font-size: 14px ">
+              人生就是这样，听不完的谎话，看不透的人心，放不下的牵挂。
+              Life is like this, endless lies, impenetrable hearts, and lingering concerns.人生就是这样，听不完的谎话，看不透的人心，放不下的牵挂。
+
+            </div>
+            <div style="margin: 2px 10px 0  10px">
+              <el-image v-for="(item,index) in srcList" fit="cover" :id="'img'+index"
+                        style="padding-left: 5px"
+                        :src="item"
+                        :preview-src-list="srcList">
+              </el-image>
+            </div>
+          </div>
+          <div style="text-align: left;margin-left: 15px;height: 30px">
+            <i style="font-size: 12px;" class="el-icon-position"></i> <span style="font-size: 12px">芝罘区鲁东大学</span>
+          </div>
+          <div style="height: 10px;background-color: #f5f2f2">
+          </div>
+        </div>
+      </div>
+      <!-- 评论区-->
+      <div>
+        <div style="border-bottom: 1px solid #e6e6e6;">
+          <p style="text-align: left;margin-left: 14px;font-size: 14px;font-weight: bold;padding: 5px;"> 评论 790 </p>
+        </div>
+        <div style="margin: 10px 0 10px 0;">
+          <div v-for="a in 10" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0">
+            <div style="width: 42px;padding: 0 10px 0 15px;float: left">
+              <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            </div>
+            <p style="font-size: 15px; ">遍念</p>
+            <p style="font-size: 14px; ">非主流！</p>
+            <div style="font-size: 13px;background-color:#ededf1;padding: 3px;margin-left: 67px; border-radius: 5px;">
+              <el-link :underline="false" type="primary">圈儿</el-link>
+              <el-link :underline="false" type="info">等人</el-link>
+              <el-link @click="showChat" :underline="false" type="primary"> 共12条评论></el-link>
+            </div>
+            <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">1-1 20:01 <i
+              style="font-size: 14px;"
+              class="el-icon-chat-dot-square">321</i>
+              <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+            </p>
+          </div>
+        </div>
+
+
+        <div style="height: 30px;background-color: #f5f2f2">
+          <p style="text-align: center;font-size: 11px;padding: 5px"> 已加载全部评论 </p>
+        </div>
+
       </div>
     </div>
-    <div>
-
-      <div   v-for="i in 1">
+    <!--   评论详细信息-->
+    <div id="chat" class="chat">
+      <div class="chatTitle">
+        <p style="font-size: 15px;text-align:center;font-weight: 600;padding: 10px">12条评论</p>
+        <i @click="closeChat" style="font-size: 20px;padding-right: 13px;float: right;margin-top:-30px;"
+           class="el-icon-close"></i>
+      </div>
+      <div style="margin: 40px 0 10px 0;">
         <div>
           <div style="width: 42px;padding: 0 10px 0 15px;float: left">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
           </div>
-          <p style="font-size: 15px; ">遍念</p>
-          <p style="font-size: 12px" class="weui-media-box__desc">17小时前 来自iPhone客户端</p>
-        </div>
-        <div>
-          <div style="text-align: left;margin: 5px 12px 0  15px; font-size: 14px ">
-            人生就是这样，听不完的谎话，看不透的人心，放不下的牵挂。
-            Life is like this, endless lies, impenetrable hearts, and lingering concerns.人生就是这样，听不完的谎话，看不透的人心，放不下的牵挂。
-
-          </div>
-          <div style="margin: 2px 10px 0  10px">
-            <el-image v-for="(item,index) in srcList" fit="cover" :id="'img'+index"
-                      style="padding-left: 5px"
-                      :src="item"
-                      :preview-src-list="srcList">
-            </el-image>
-          </div>
-        </div>
-        <div style="text-align: left;margin-left: 15px;height: 30px">
-          <i style="font-size: 12px;" class="el-icon-position"></i> <span style="font-size: 12px">芝罘区鲁东大学</span>
-        </div>
-        <div style="height: 10px;background-color: #f5f2f2">
-        </div>
-      </div>
-    </div>
-    <!-- 评论区-->
-    <div>
-      <div style="border-bottom: 1px solid #e6e6e6;">
-        <p style="text-align: left;margin-left: 14px;font-size: 14px;font-weight: bold;padding: 5px;"> 评论 790 </p>
-      </div>
-      <div style="margin: 10px 0 10px 0">
-        <div>
-          <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-          </div>
-          <p style="font-size: 15px; ">遍念</p>
+          <p style="font-size: 15px;">遍念</p>
           <p style="font-size: 14px; ">非主流！</p>
-          <p style="font-size: 12px" class="weui-media-box__desc">1-1 20:01</p>
+
+          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">1-1 20:01 <i
+            style="font-size: 14px;"
+            class="el-icon-chat-dot-square">321</i>
+            <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+          </p>
         </div>
       </div>
-
-
-      <div style="height: 30px;background-color: #f5f2f2">
-        <p style="text-align: center;font-size: 11px;padding: 5px"> 已加载全部评论 </p>
+      <div style="height: 10px;background-color: #f5f2f2">
       </div>
+      <div style="margin: 20px 0 10px 0;">
+        <div v-for="a in 10" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0">
+          <div style="width: 42px;padding: 0 10px 0 15px;float: left">
+            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+          </div>
+          <p style="font-size: 15px;">遍念</p>
+          <p style="font-size: 14px; ">非主流！</p>
 
+          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">1-1 20:01
+            <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+          </p>
+        </div>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -70,6 +118,7 @@
     name: 'blogDetail',
     data() {
       return {
+        chatHeight: '',
         imgWidth: '',
         url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         srcList: [
@@ -86,20 +135,35 @@
       }
     },
     mounted() {
-      this.imgWidth = (document.body.clientWidth -40) / 3;
+      this.imgWidth = (document.body.clientWidth - 40) / 3;
+      var _this = this;
+      setTimeout(function () {
+        for (let i = 0; i < 10; i++) {
+          $("#img" + i).css("width", _this.imgWidth);
+          $("#img" + i).css("height", _this.imgWidth);
+        }
+      }, 100);
+        window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
-      //隐藏图片
-      hideImg() {
-        $("#gallery").hide();
-      },
-      //展示图片
-      showImg() {
-        // $("#galleryImg").attr("style", "background-image: url("++");");
-        // $("#gallery").show();
+      handleScroll(){
+        let scrollTop = document.getElementById("chat").scrollTop;
+        if (scrollTop == 0){
+          this.closeChat();
+        }
       },
       toBack() {
         this.$router.push('/')
+      },
+      showChat() {
+        $("#chat").css("height", "600px");
+        $("#chat").css("overflow", "auto");
+        $("#background").css("filter", "blur(4px)");
+        $("#background").css("overflow-y", "hidden");
+      },
+      closeChat() {
+        $("#chat").css("height", "0");
+        $("#background").css("filter", "");
       },
     }
   }
@@ -121,5 +185,24 @@
   .top-na {
     padding: 10px 0;
     border-top: 1px solid #e5e5e5;
+  }
+
+  .chat {
+    border-radius: 25px;
+    width: 100%;
+    height: 0;
+    position: fixed;
+    transition: 0.5s;
+    bottom: 0;
+    z-index: 2;
+    background-color: #ffffff;
+  }
+
+  .chatTitle {
+    border-radius: 25px;
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    background-color: #ffffff;
   }
 </style>

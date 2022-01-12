@@ -14,7 +14,7 @@
           <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
         </div>
         <p style="font-size: 15px; ">遍念</p>
-        <p style="font-size: 12px" class="weui-media-box__desc">17小时前 来自iPhone客户端</p>
+        <p style="font-size: 12px;color: #909399" >17小时前 来自iPhone客户端</p>
       </div>
       <div @click="toDetail" style="text-align: left;margin: 5px 12px 0  12px; font-size: 15px ">
         人生就是这样，听不完的谎话，看不透的人心，放不下的牵挂。
@@ -22,7 +22,7 @@
         <el-link :underline="false">全文</el-link>
       </div>
       <div style="margin: 2px 10px 0  10px">
-        <el-image v-for="(item,index) in srcList" fit="cover" :id="'img'+index"
+        <el-image v-for="(item,index) in srcList" fit="cover" :id="'img'+index" :key="index"
                   style="padding-left: 5px"
                   :src="item"
                   :preview-src-list="srcList">
@@ -71,18 +71,9 @@
           $("#img" + i).css("width", _this.imgWidth);
           $("#img" + i).css("height", _this.imgWidth);
         }
-      },0);
+      },200);
 
     }, methods: {
-      //隐藏图片
-      hideImg() {
-        $("#gallery").hide();
-      },
-      //展示图片
-      showImg() {
-        // $("#galleryImg").attr("style", "background-image: url("++");");
-        // $("#gallery").show();
-      },
       //到详情页面
       toDetail() {
         this.$router.push({name: 'blogDetail', params: {blogId: '1'}})
