@@ -1,16 +1,24 @@
 <template>
   <div>
-    <div id="background" style="transition: 0.5s;">
-      <div class="top">
+    <div style="display:none;position: fixed;transition: 0.5s;z-index: 4" id="topImg" class="top">
+      <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 15px"><i
+        class="el-icon-arrow-left"></i>首页
+      </div>
+      <div style="width: 25px;margin-right: auto;margin-left: auto">
+        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+      </div>
+      <el-button style="float: right;margin-top: -35px;margin-right: 10px" type="warning" size="mini" icon="el-icon-plus" round>关注</el-button>
+    </div>
+    <div id="background"  style="transition: 0.5s;">
+      <div id="top" class="top">
         <div class="top-na">
           <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 5px"><i
             class="el-icon-arrow-left"></i>首页
           </div>
-          <div style="font-size: 15px;width: 84%;text-align:center;font-weight: 600">微博正文</div>
+          <div style="font-size: 15px;width: 87%;text-align:center;font-weight: 600">微博正文</div>
         </div>
       </div>
       <div>
-
         <div v-for="i in 1">
           <div>
             <div style="width: 42px;padding: 0 10px 0 15px;float: left">
@@ -73,7 +81,7 @@
       </div>
     </div>
     <!--   评论详细信息-->
-    <div id="chat" class="chat">
+    <div id="chat" ref="chat" class="chat">
       <div class="chatTitle">
         <p style="font-size: 15px;text-align:center;font-weight: 600;padding: 10px">12条评论</p>
         <i @click="closeChat" style="font-size: 20px;padding-right: 13px;float: right;margin-top:-30px;"
@@ -143,10 +151,23 @@
           $("#img" + i).css("height", _this.imgWidth);
         }
       }, 100);
-        window.addEventListener('scroll', this.handleScroll);
+        this.$refs.chat.addEventListener('scroll', this.chatScroll);
+      window.addEventListener('scroll',this.backScroll);
     },
     methods: {
-      handleScroll(){
+      backScroll(){
+        let scrollTop =document.documentElement.scrollTop;
+        let opacity =  1 - scrollTop/45 < 0  ? 0 : 1 - scrollTop/45
+        if (scrollTop > 0){
+          $("#topImg").css("display","block");
+          $("#topImg").css("opacity", 1 - opacity);
+        }else {
+          $("#topImg").css("display","none");
+          $("#topImg").css("opacity", opacity+0.4 );
+        }
+
+      },
+      chatScroll(){
         let scrollTop = document.getElementById("chat").scrollTop;
         if (scrollTop == 0){
           this.closeChat();
@@ -159,11 +180,14 @@
         $("#chat").css("height", "600px");
         $("#chat").css("overflow", "auto");
         $("#background").css("filter", "blur(4px)");
-        $("#background").css("overflow-y", "hidden");
+     //   $("#topImg").css("filter", "blur(4px)");
+        $("#background").css("overflow", "hidden");
       },
       closeChat() {
         $("#chat").css("height", "0");
         $("#background").css("filter", "");
+        $("#topImg").css("filter", "");
+        $("#background").css("overflow", "");
       },
     }
   }
@@ -204,5 +228,8 @@
     z-index: 3;
     width: 100%;
     background-color: #ffffff;
+  }
+   .el-button--mini, .el-button--mini.is-round{
+  padding: 6px 7px;
   }
 </style>

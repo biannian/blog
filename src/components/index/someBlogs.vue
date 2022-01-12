@@ -1,14 +1,6 @@
 <template>
   <div>
     <div>
-      <div @click="hideImg" style="display: none" role="dialog" aria-labelledby="galleryImg" aria-hidden="true"
-           aria-modal="true"
-           class="weui-gallery" id="gallery">
-        <span id="galleryImg" alt="图片详情" role="img" class="weui-gallery__img"></span>
-      </div>
-    </div>
-
-    <div>
       <div>
         <div style="width: 42px;padding: 0 10px 0 15px;float: left">
           <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
@@ -23,7 +15,7 @@
       </div>
       <div style="margin: 2px 10px 0  10px">
         <el-image v-for="(item,index) in srcList" fit="cover" :id="'img'+index" :key="index"
-                  style="padding-left: 5px"
+                  style="padding-left: 5px;width: 121.2px;height: 121.2px"
                   :src="item"
                   :preview-src-list="srcList">
         </el-image>
@@ -66,12 +58,12 @@
     mounted() {
       this.imgWidth = (document.body.clientWidth - 40) / 3;
       var _this = this;
-      setTimeout(function () {
-        for (let i = 0; i < 10; i++) {
-          $("#img" + i).css("width", _this.imgWidth);
-          $("#img" + i).css("height", _this.imgWidth);
-        }
-      },200);
+      // setTimeout(function () {
+      //   for (let i = 0; i < 10; i++) {
+      //     $("#img" + i).css("width", _this.imgWidth);
+      //     $("#img" + i).css("height", _this.imgWidth);
+      //   }
+      // },200);
 
     }, methods: {
       //到详情页面
