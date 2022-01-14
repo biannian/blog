@@ -11,7 +11,7 @@ const service = axios.create({
   // baseURL: process.env.BASE_API,
   baseURL: process.env.BASE_API,
   // 超时时间 单位是ms，这里设置了3s的超时时间
-  timeout: 3 * 1000
+  timeout: 6 * 1000
 })
 // 2.请求拦截器
 var loading;
@@ -39,7 +39,7 @@ service.interceptors.response.use(response => {
   return response
 }, error => {
   /***** 接收到异常响应的处理开始 *****/
-  console.log(error);
+  loading.close();
   if (error && error.response) {
     // 1.公共错误处理
     // 2.根据响应码具体处理
@@ -95,6 +95,7 @@ service.interceptors.response.use(response => {
     if (JSON.stringify(error).includes('timeout')) {
       Message.error('服务器响应超时，请刷新当前页')
     }
+    loading.close();
     error.message('连接服务器失败')
   }
 
