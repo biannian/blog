@@ -96,13 +96,9 @@ service.interceptors.response.use(response => {
       Message.error('服务器响应超时，请刷新当前页')
     }
     loading.close();
-    error.message('连接服务器失败')
+    error.message='连接服务器失败';
   }
-
   Message.error(error.message)
-  // if(error.message ==){
-
-  // }
   /***** 处理结束 *****/
   //如果不需要错误处理，以上的处理过程都可省略
   return Promise.resolve(error.response)

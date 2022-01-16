@@ -3,12 +3,13 @@
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
         <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+          <el-avatar :src="blog.user.userImgUrl"></el-avatar>
         </div>
-        <p style="font-size: 15px; ">遍念</p>
-        <p style="font-size: 12px;color: #909399">{{blog.blogTime}} 来自iPhone客户端</p>
+        <p style="font-size: 15px; ">{{blog.user.userName}}</p>
+        <p style="font-size: 12px;color: #909399">{{blog.blogTime}} {{blog.blogFrom}}</p>
 
-        <div @click="toDetail(blog.blogId)" style="text-align: left;margin: 5px 12px 0  12px; font-size: 15px" v-html="blog.blogInfo">
+        <div @click="toDetail(blog.blogId)" style="text-align: left;margin: 5px 12px 0  12px; font-size: 15px"
+             v-html="blog.blogInfo">
 
           <el-link v-if="blog.blogInfo.length > 80" type="primary" :underline="false">全文</el-link>
         </div>
@@ -37,7 +38,8 @@
         <a> <i style="font-size: 14px" class="el-icon-share">{{blog.repeatCount}}</i></a>
         <a> <i style="font-size: 14px" class="el-icon-chat-dot-square">{{blog.messageCount}}</i></a>
         <a @click="likeBolg(blog)" v-if="blog.liked"> <i style="font-size: 14px" class="el-icon-star-on">{{blog.likeCount}}</i></a>
-        <a @click="likeBolg(blog)" v-else> <i style="font-size: 14px" class="el-icon-star-off">{{blog.likeCount}}</i></a>
+        <a @click="likeBolg(blog)" v-else> <i style="font-size: 14px"
+                                              class="el-icon-star-off">{{blog.likeCount}}</i></a>
       </div>
       <div style="height: 10px;background-color: #f5f2f2">
       </div>
@@ -67,15 +69,18 @@
       this.getBlogInfo();
 
     }, methods: {
-      likeBolg(blog){
+      likeBolg(blog) {
         blog.liked = !blog.liked;
-        if (blog.liked == false){
-          blog.likeCount --;
-        }else {
-          blog.likeCount ++;
+        if (blog.liked == false) {
+          blog.likeCount--;
+        } else {
+          blog.likeCount++;
         }
-
-        api.getBlogInfo(blog.blogId);
+        let params = {
+          'blogId': blog.blogId,
+          'userId': '',
+        }
+        api.likeBlog(params);
       },
       //到详情页面
       toDetail(blogId) {
@@ -94,8 +99,8 @@
         this.blogs = res.data.result;
 
         for (let i = 0; i < this.blogs.length; i++) {
-          if ( this.blogs[i].blogInfo.length > 80){
-            this.blogs[i].blogInfo.slice(0,80);
+          if (this.blogs[i].blogInfo.length > 80) {
+            this.blogs[i].blogInfo.slice(0, 80);
           }
           if (this.blogs[i].blogImg != null) {
             let imgList = [];
@@ -112,6 +117,8 @@
 </script>
 
 
-<style scoped>
-
+<style>
+  .el-image-viewer__mask{
+    opacity:1;
+}
 </style>
