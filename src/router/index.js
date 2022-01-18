@@ -6,6 +6,7 @@ import someBlogs from '../components/index/someBlogs'
 import blogIndex from '../components/index/blogIndex.vue'
 import blogFollow from '../components/index/blogFollow'
 import blogDetail from '../components/index/blogDetail'
+import messageIndex from '../components/message/messageIndex'
 
 Vue.use(Router)
 
@@ -51,6 +52,14 @@ export default new Router({
       component: blogDetail,
       meta:{
         tx:1
+      }
+    },
+    {
+      path: '/messageIndex',
+      name: 'messageIndex',
+      component: messageIndex,
+      meta:{
+        tx:2
       }
     },
   ]

@@ -7,6 +7,7 @@
           <div style="height: 62.79px"></div>
         </div>
         <div id="panel2" role="tabpanel" aria-labelledby="tab2" class="weui-tab__panel" style="display: none;">
+          <message-index></message-index>
           <div style="height: 62.79px"></div>
         </div>
         <div id="panel3" role="tabpanel" aria-labelledby="tab3" class="weui-tab__panel" style="display: none;">
@@ -43,17 +44,28 @@
 </template>
 
 <script>
+  import MessageIndex from "./message/messageIndex";
+  function init(){
+    $(function(){
+      $('.weui-tabbar__item').on('click', function () {
+        $(this).attr('aria-selected','true').addClass('weui-bar__item_on');
+        $(this).siblings('.weui-bar__item_on').removeClass('weui-bar__item_on').attr('aria-selected','false');
+        var panelId = '#' + $(this).attr('aria-controls');
+        $(panelId).css('display','block');
+        $(panelId).siblings('.weui-tab__panel').css('display','none');
+      });
+    });
+  }
   import myIndex from './my/myIndex.vue'
   import SomeBolgs from "./index/blogIndex";
-
   export default {
-    components: {SomeBolgs, myIndex},
+    components: {MessageIndex, SomeBolgs, myIndex},
     name: 'index',
     data() {
       return {}
     },
     mounted() {
-
+      init();
     }
   }
 </script>

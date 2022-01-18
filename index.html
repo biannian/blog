@@ -3,18 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-    <script type="text/javascript">
-      $(function(){
-        $('.weui-tabbar__item').on('click', function () {
-          $(this).attr('aria-selected','true').addClass('weui-bar__item_on');
-          $(this).siblings('.weui-bar__item_on').removeClass('weui-bar__item_on').attr('aria-selected','false');
-          var panelId = '#' + $(this).attr('aria-controls');
-          $(panelId).css('display','block');
-          $(panelId).siblings('.weui-tab__panel').css('display','none');
-        });
-      });
-    </script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script> 
     <title>microblog</title>
   </head>
   <body>

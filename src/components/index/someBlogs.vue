@@ -3,7 +3,7 @@
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
         <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-          <el-avatar :src="blog.user.userImgUrl"></el-avatar>
+          <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
         </div>
         <p style="font-size: 15px; ">{{blog.user.userName}}</p>
         <p style="font-size: 12px;color: #909399">{{blog.blogTime}} {{blog.blogFrom}}</p>
@@ -97,7 +97,6 @@
       },
       getBlogSuccess(res) {
         this.blogs = res.data.result;
-
         for (let i = 0; i < this.blogs.length; i++) {
           if (this.blogs[i].blogInfo.length > 80) {
             this.blogs[i].blogInfo.slice(0, 80);

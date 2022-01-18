@@ -1,59 +1,32 @@
 <template>
-  <div class="page">
-    <div class="page__hd">
-      <h1 class="page__title">Badge</h1>
-      <p class="page__desc">徽章</p>
+  <div>
+    <div style="position: fixed;transition: 0.5s;z-index: 1001" id="topImg" class="top">
+      <div class="top-nav1">
+        <span style="margin-left: 50%;" id="my">我</span>
+        <span style="margin-left: 38%"> <i class="el-icon-setting"></i></span>
+      </div>
     </div>
+    <!--    头像 已登录-->
+    <div style="border-bottom: 1px solid #e5e5e5;height: 180px;background-color: #fafafa;">
 
-    <div class="page__bd">
-      <div class="weui-cells__title">新消息提示跟摘要信息后，统一在列表右侧</div>
-      <div class="weui-cells">
-        <div role="link" aria-labelledby="js_cell_l1_bd js_cell_l1_tips" aria-describedby="js_cell_l1_note" class="weui-cell weui-cell_active weui-cell_access">
-          <div aria-hidden="true" class="weui-cell__bd" id="js_cell_l1_bd">单行列表</div>
-          <div aria-hidden="true" class="weui-cell__ft" id="js_cell_l1_bd" style="font-size: 0;">
-            <span class="demo_badge_tips" id="js_cell_l1_tips">详细信息</span>
-            <span id="js_cell_l1_note" aria-label="，有更新" class="weui-badge weui-badge_dot"></span>
-          </div>
+        <div style="padding: 60px 0px 0 30px;">
+          <el-avatar style="float:left;" :size="50"
+                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+          <p style="font-size: 16px;padding: 5px 0 0 60px">遍念</p>
+          <p style="font-size: 14px;padding: 0px 0 0 60px">微博号：</p>
+
+        </div>
+        <div style="margin-top:15px;display: flex; justify-content: space-evenly;font-size: 14px">
+          <div style="text-align: center"><p>5</p><p>微博</p></div>
+          <div style="text-align: center"><p>5</p><p>关注</p></div>
+          <div style="text-align: center"><p>5</p><p>粉丝</p></div>
         </div>
       </div>
 
-      <div class="weui-cells__title">未读数红点跟在主题信息后，统一在列表左侧</div>
-      <div class="weui-cells demo_badge_cells">
-        <div role="option" aria-labelledby="b1_txt1" aria-describedby="b1_n1" class="weui-cell weui-cell_active">
-          <div class="weui-cell__hd" aria-hidden="true">
-            <img src="images/pic_160.png" alt="">
-            <span id="b1_n1" class="weui-badge" aria-label="，8个新通知">8</span>
-          </div>
-          <div class="weui-cell__bd" aria-hidden="true" id="b1_txt1">
-            <span>联系人名称</span>
-            <div class="demo_badge_desc">摘要信息</div>
-          </div>
-        </div>
-        <div role="link" aria-labelledby="b2_n1" aria-describedby="b2_txt2" class="weui-cell weui-cell_active weui-cell_access">
-                <span class="weui-cell__bd" aria-hidden="true">
-                    <span class="demo_badge_title" id="b2_n1">单行列表</span>
-                    <span class="weui-badge" id="b2_txt2" aria-label="，8个新通知">8</span>
-                </span>
-          <span class="weui-cell__ft" aria-hidden="true"></span>
-        </div>
-        <div role="link" aria-labelledby="b3_n1 b3_n2" aria-describedby="b3_txt1 b3_txt1_note" class="weui-cell weui-cell_active weui-cell_access">
-                <span class="weui-cell__bd" aria-hidden="true">
-                    <span class="demo_badge_title" id="b3_n1">单行列表</span>
-                    <span class="weui-badge" id="b3_txt1" aria-label="">8</span>
-                    <span id="b3_txt1_note" class="weui-hidden_abs">个新通知，</span>
-                </span>
-          <span class="weui-cell__ft" aria-hidden="true" id="b3_n2">详细信息</span>
-        </div>
-
-        <div role="link" aria-labelledby="js_a11y_nt js_a11y_comma js_a11y_nb" class="weui-cell weui-cell_active weui-cell_access">
-                <span class="weui-cell__bd" aria-hidden="true">
-                    <span id="js_a11y_nt" class="demo_badge_title">单行列表</span>
-                    <span id="js_a11y_nb" class="weui-badge">New</span>
-                </span>
-          <span class="weui-cell__ft" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
   </div>
 </template>
 
@@ -61,15 +34,41 @@
   export default {
     name: 'myIndex',
     data() {
-      return {}
+      return {
+        isShowTop: false,
+        userId: '',
+      }
     },
     mounted() {
+      this.userId = sessionStorage["userId"];
+      window.addEventListener('scroll', this.backScroll);
 
+    }, methods: {
+      backScroll() {
+        let scrollTop = document.documentElement.scrollTop;
+        if (scrollTop > 60) {
+          $("#my").css("visibility", "");
+        } else {
+          $("#my").css("visibility", "hidden");
+        }
+      }
     }
   }
 </script>
 
-
 <style scoped>
+  .top {
 
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    background-color: #fafafa;
+  }
+
+  .top-nav1 {
+    font-size: 17px;
+    padding: 10px 0;
+    border-top: 1px solid #e5e5e5;
+  }
 </style>

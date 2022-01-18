@@ -1,12 +1,12 @@
 <template>
   <div>
     <!--    上方头像关注-->
-    <div style="display:none;position: fixed;transition: 0.5s;z-index: 4" id="topImg" class="top">
+    <div style="display:none;position: fixed;transition: 0.5s;z-index: 1001" id="topImg" class="top">
       <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 15px"><i
         class="el-icon-arrow-left"></i>首页
       </div>
       <div style="width: 25px;margin-right: auto;margin-left: auto">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <el-avatar  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
       </div>
       <el-button style="float: right;margin-top: -35px;margin-right: 10px" type="warning" size="mini"
                  icon="el-icon-plus" round>关注
@@ -19,6 +19,8 @@
       <a @click="likeBolg(blog)" v-if="blog.liked"> <i style="font-size: 14px" class="el-icon-star-on">点赞</i></a>
       <a @click="likeBolg(blog)" v-else> <i style="font-size: 14px" class="el-icon-star-off">点赞</i></a>
     </div>
+<!--    页面屏蔽罩-->
+    <div id="mask" class="mask" style="display: none" @click="closeChat"></div>
     <!--    页面-->
     <div id="background" style="transition: 0.5s;">
       <div id="top" class="top">
@@ -33,7 +35,7 @@
         <div>
           <div v-if="blog.user">
             <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-              <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+              <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{blog.user.userName}}</p>
             <p style="font-size: 12px;color: #909399">{{blog.blogTime}} {{blog.blogFrom}}</p>
@@ -79,8 +81,8 @@
         <div style="margin: 10px 0 10px 0;">
           <div v-for="comm in blog.comment" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0"
                v-if="comm.higherId == 0">
-            <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-              <el-avatar :src="comm.user.userImgUrl"></el-avatar>
+            <div style="width: 42px;padding:2px 10px 0 15px;float: left">
+              <el-avatar :size="40" :src="comm.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{comm.user.userName}}</p>
             <p style="font-size: 14px; ">{{comm.commentInfo}}</p>
@@ -97,7 +99,10 @@
               style="font-size: 14px;"
               class="el-icon-chat-dot-square">{{commentMap.get(comm.commentId) !=null ?
               commentMap.get(comm.commentId).length : null}}</i>
-              <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+              <a @click="likeComment(comm)" v-if="comm.isCommentLike"> <i style="font-size: 14px"
+                                                                          class="el-icon-star-on">{{comm.likeCount}}</i></a>
+              <a @click="likeComment(comm)" v-else> <i style="font-size: 14px"
+                                                       class="el-icon-star-off">{{comm.likeCount}}</i></a>
             </p>
           </div>
           <div style="text-align: center;font-size: 11px;padding: 12px" v-if="blog.comment && blog.comment.length == 0">
@@ -115,23 +120,27 @@
     <!--   评论详细信息-->
     <div id="chat" ref="chat" class="chat">
       <div class="chatTitle">
-        <p style="font-size: 15px;text-align:center;font-weight: 600;padding: 10px">{{commentMap.get(openCommentId) !=null ? commentMap.get(openCommentId).length : null}}条评论</p>
+        <p style="font-size: 15px;text-align:center;font-weight: 600;padding: 10px">{{commentMap.get(openCommentId)
+          !=null ? commentMap.get(openCommentId).length : null}}条评论</p>
         <i @click="closeChat" style="font-size: 20px;padding-right: 13px;float: right;margin-top:-30px;"
            class="el-icon-close"></i>
       </div>
       <div style="margin: 50px 0 10px 0;">
         <div v-if="openComment">
-          <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-            <el-avatar :src="openComment.user.userImgUrl"></el-avatar>
+          <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
+            <el-avatar :size="40" :src="openComment.user.userImgUrl"></el-avatar>
           </div>
-          <p style="font-size: 15px;" >{{openComment.user.userName}}</p>
+          <p style="font-size: 15px;">{{openComment.user.userName}}</p>
           <p style="font-size: 14px; ">{{openComment.commentInfo}}</p>
 
           <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{openComment.commentTime}} <i
             style="font-size: 14px;"
             class="el-icon-chat-dot-square">{{commentMap.get(openComment.commentId) !=null ?
             commentMap.get(openComment.commentId).length : null}}</i>
-            <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+            <a @click="likeComment(openComment)" v-if="openComment.isCommentLike"> <i style="font-size: 14px"
+                                                                        class="el-icon-star-on">{{openComment.likeCount}}</i></a>
+            <a @click="likeComment(openComment)" v-else> <i style="font-size: 14px"
+                                                     class="el-icon-star-off">{{openComment.likeCount}}</i></a>
           </p>
         </div>
       </div>
@@ -139,14 +148,17 @@
       </div>
       <div style="margin: 20px 0 10px 0;">
         <div v-for="item in commentMap.get(openCommentId)" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0">
-          <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-            <el-avatar :src="item.user.userImgUrl"></el-avatar>
+          <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
+            <el-avatar :size="40" :src="item.user.userImgUrl"></el-avatar>
           </div>
           <p style="font-size: 15px;">{{item.user.userName}}</p>
-          <p style="font-size: 14px; ">{{item.commentInfo}}</p>
+          <p style="font-size: 14px;" v-html="item.commentInfo"></p>
 
           <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{item.commentTime}}
-            <a> <i style="font-size: 14px" class="el-icon-thumb ">1222</i></a>
+            <a @click="likeComment(item)" v-if="item.isCommentLike"> <i style="font-size: 14px"
+                                                                                      class="el-icon-star-on">{{item.likeCount}}</i></a>
+            <a @click="likeComment(item)" v-else> <i style="font-size: 14px"
+                                                            class="el-icon-star-off">{{item.likeCount}}</i></a>
           </p>
         </div>
       </div>
@@ -166,10 +178,10 @@
         imgWidth2: '',
         imgWidth1: '',
         srcList: new Map(),
-        commentMap: new Map(),
+        commentMap: new Map(),//存放子评论
         blog: {},
-        openCommentId:'',
-        openComment:null,
+        openCommentId: '',//当前打开的评论id
+        openComment: null,//当前打开的评论对象
       }
     },
     mounted() {
@@ -189,6 +201,15 @@
       window.addEventListener('scroll', this.backScroll);
     },
     methods: {
+      /**
+       * 点赞
+       * @param comment
+       */
+      likeComment(comment) {
+        comment.isCommentLike = !comment.isCommentLike;
+        api.likeComment(comment.commentId);
+      },
+
       isShowComment(commentId) {
         for (let i = 0; i < this.blog.comment.length; i++) {
           if (this.blog.comment[i].higherId == commentId) {
@@ -199,11 +220,6 @@
       //点赞
       likeBolg(blog) {
         blog.liked = !blog.liked;
-        if (blog.liked == false) {
-          blog.likeCount--;
-        } else {
-          blog.likeCount++;
-        }
         api.likeBlog(blog.blogId);
       },
       //查询微博成功
@@ -253,21 +269,26 @@
         this.$router.push('/')
       },
       showChat(comment) {
-        this.openCommentId= comment.commentId;
+        this.openCommentId = comment.commentId;
         this.openComment = comment;
         $("#chat").css("height", "600px");
         $("#chat").css("overflow", "auto");
         $("#background").css("filter", "blur(4px)");
         //   $("#topImg").css("filter", "blur(4px)");
-        $("#background").css("overflow", "hidden");
+        document.body.style.overflow = "hidden";
         $("#bottomButton").css("display", "none");
+        $("#mask").css("display", "block");
+        $("#mask").css("overflow", "hidden");
       },
       closeChat() {
         $("#chat").css("height", "0");
         $("#background").css("filter", "");
         $("#topImg").css("filter", "");
-        $("#background").css("overflow", "");
+        $("#app").css("overflow", "");
+        document.body.style.overflow = "";
         $("#bottomButton").css("display", "flex");
+        $("#mask").css("display", "none");
+        $("#mask").css("overflow", "");
       },
     }
   }
@@ -275,6 +296,15 @@
 
 
 <style>
+  .mask{
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    touch-action: none;
+  }
   .bottom {
     padding: 10px;
     background-color: #ffffff;
@@ -311,7 +341,7 @@
     position: fixed;
     transition: 0.5s;
     bottom: 0;
-    z-index: 2;
+    z-index: 10001;
     background-color: #ffffff;
   }
 
