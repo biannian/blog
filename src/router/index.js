@@ -7,6 +7,8 @@ import blogIndex from '../components/index/blogIndex.vue'
 import blogFollow from '../components/index/blogFollow'
 import blogDetail from '../components/index/blogDetail'
 import messageIndex from '../components/message/messageIndex'
+import login from '../components/my/login.vue'
+import register from '../components/my/register.vue'
 
 Vue.use(Router)
 
@@ -60,6 +62,20 @@ export default new Router({
       component: messageIndex,
       meta:{
         tx:2
+      }
+    }, {
+      path: '/login',
+      name: 'login',
+      component: login,
+      meta:{
+        tx:1
+      }
+    }, {
+      path: '/register',
+      name: 'register',
+      component: register,
+      meta:{
+        tx:0
       }
     },
   ]

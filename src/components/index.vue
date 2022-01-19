@@ -2,15 +2,15 @@
   <div class="page">
     <div class="page__bd" style="height: 100%;">
       <div class="weui-tab">
-        <div id="panel1" role="tabpanel" aria-labelledby="tab1" class="weui-tab__panel">
+        <div id="panel1" role="tabpanel" aria-labelledby="tab1" class="weui-tab__panel" v-if="isShowBlog">
           <some-bolgs></some-bolgs>
           <div style="height: 62.79px"></div>
         </div>
-        <div id="panel2" role="tabpanel" aria-labelledby="tab2" class="weui-tab__panel" style="display: none;">
+        <div id="panel2" role="tabpanel" aria-labelledby="tab2" class="weui-tab__panel" v-if="isShowMessage">
           <message-index></message-index>
           <div style="height: 62.79px"></div>
         </div>
-        <div id="panel3" role="tabpanel" aria-labelledby="tab3" class="weui-tab__panel" style="display: none;">
+        <div id="panel3" role="tabpanel" aria-labelledby="tab3" class="weui-tab__panel" v-if="isShowMy">
           <my-index></my-index>
           <div style="height: 62.79px"></div>
         </div>
@@ -45,27 +45,43 @@
 
 <script>
   import MessageIndex from "./message/messageIndex";
-  function init(){
-    $(function(){
-      $('.weui-tabbar__item').on('click', function () {
-        $(this).attr('aria-selected','true').addClass('weui-bar__item_on');
-        $(this).siblings('.weui-bar__item_on').removeClass('weui-bar__item_on').attr('aria-selected','false');
-        var panelId = '#' + $(this).attr('aria-controls');
-        $(panelId).css('display','block');
-        $(panelId).siblings('.weui-tab__panel').css('display','none');
-      });
-    });
-  }
+
   import myIndex from './my/myIndex.vue'
   import SomeBolgs from "./index/blogIndex";
+
   export default {
     components: {MessageIndex, SomeBolgs, myIndex},
     name: 'index',
     data() {
-      return {}
+      return {
+        isShowBlog: true,
+        isShowMy: false,
+        isShowMessage: false,
+      }
     },
     mounted() {
-      init();
+var _this = this;
+      $(function () {
+        $('.weui-tabbar__item').on('click', function () {
+          $(this).attr('aria-selected', 'true').addClass('weui-bar__item_on');
+          $(this).siblings('.weui-bar__item_on').removeClass('weui-bar__item_on').attr('aria-selected', 'false');
+          var panelId = '#' + $(this).attr('aria-controls');
+          if (panelId == "#panel1"){
+            _this.isShowBlog = true;
+            _this. isShowMy= false;
+            _this.  isShowMessage= false;
+          }if (panelId == "#panel2"){
+            _this.isShowBlog = false;
+            _this. isShowMy= false;
+            _this.  isShowMessage= true;
+          }if (panelId == "#panel3"){
+            _this.isShowBlog = false;
+            _this. isShowMy= true;
+            _this.  isShowMessage= false;
+          }
+        });
+      });
+
     }
   }
 </script>

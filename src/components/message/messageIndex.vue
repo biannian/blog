@@ -5,13 +5,16 @@
 <script>
 
   export default {
+
     name: 'messageIndex',
     data() {
-      return {}
-    },
-    mounted() {
+      return {
+
+      }
     },
 
+    mounted() {
+    },
 
   }
 </script>

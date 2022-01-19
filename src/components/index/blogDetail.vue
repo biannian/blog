@@ -1,12 +1,14 @@
 <template>
   <div>
+    <!--    图片详情-->
+    <blog-img-swiper v-if="openBlogId" :srcList="srcList" :blogId="openBlogId" :imgId="openImgId"></blog-img-swiper>
     <!--    上方头像关注-->
     <div style="display:none;position: fixed;transition: 0.5s;z-index: 1001" id="topImg" class="top">
       <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 15px"><i
         class="el-icon-arrow-left"></i>首页
       </div>
-      <div style="width: 25px;margin-right: auto;margin-left: auto">
-        <el-avatar  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+      <div v-if="blog.user" style="width: 25px;margin-right: auto;margin-left: auto;padding-top: 3px">
+        <el-avatar :size="37" :src="blog.user.userImgUrl"></el-avatar>
       </div>
       <el-button style="float: right;margin-top: -35px;margin-right: 10px" type="warning" size="mini"
                  icon="el-icon-plus" round>关注
@@ -19,7 +21,7 @@
       <a @click="likeBolg(blog)" v-if="blog.liked"> <i style="font-size: 14px" class="el-icon-star-on">点赞</i></a>
       <a @click="likeBolg(blog)" v-else> <i style="font-size: 14px" class="el-icon-star-off">点赞</i></a>
     </div>
-<!--    页面屏蔽罩-->
+    <!--    页面屏蔽罩-->
     <div id="mask" class="mask" style="display: none" @click="closeChat"></div>
     <!--    页面-->
     <div id="background" style="transition: 0.5s;">
@@ -38,7 +40,7 @@
               <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{blog.user.userName}}</p>
-            <p style="font-size: 12px;color: #909399">{{blog.blogTime}} {{blog.blogFrom}}</p>
+            <p style="font-size: 12px;color: #909399">{{blog.blogTimeDiffer}} {{blog.blogFrom}}</p>
           </div>
           <div>
             <div v-html="blog.blogInfo" style="text-align: left;margin: 5px 12px 0  12px; font-size: 15px">
@@ -48,19 +50,19 @@
                         :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length >= 3"
                         :src="item.imgUrl"
-                        :preview-src-list="srcList.get(blog.blogId)">
+                        @click="openImg(blog.blogId,index)">
               </el-image>
               <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
                         :style="'padding-left: 5px;width: '+imgWidth2+'px;height: '+imgWidth2+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length == 2"
                         :src="item.imgUrl"
-                        :preview-src-list="srcList.get(blog.blogId)">
+                        @click="openImg(blog.blogId,index)">
               </el-image>
               <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
                         :style="'padding-left: 5px;width: '+imgWidth1+'px;height: '+imgWidth1+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length == 1"
                         :src="item.imgUrl"
-                        :preview-src-list="srcList.get(blog.blogId)">
+                        @click="openImg(blog.blogId,index)">
               </el-image>
             </div>
           </div>
@@ -95,7 +97,7 @@
                 共{{commentMap.get(comm.commentId) !=null ? commentMap.get(comm.commentId).length : null}}条评论>
               </el-link>
             </div>
-            <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{comm.commentTime}} <i
+            <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{comm.commentTimeDiffer}} <i
               style="font-size: 14px;"
               class="el-icon-chat-dot-square">{{commentMap.get(comm.commentId) !=null ?
               commentMap.get(comm.commentId).length : null}}</i>
@@ -133,14 +135,14 @@
           <p style="font-size: 15px;">{{openComment.user.userName}}</p>
           <p style="font-size: 14px; ">{{openComment.commentInfo}}</p>
 
-          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{openComment.commentTime}} <i
+          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{openComment.commentTimeDiffer}} <i
             style="font-size: 14px;"
             class="el-icon-chat-dot-square">{{commentMap.get(openComment.commentId) !=null ?
             commentMap.get(openComment.commentId).length : null}}</i>
             <a @click="likeComment(openComment)" v-if="openComment.isCommentLike"> <i style="font-size: 14px"
-                                                                        class="el-icon-star-on">{{openComment.likeCount}}</i></a>
+                                                                                      class="el-icon-star-on">{{openComment.likeCount}}</i></a>
             <a @click="likeComment(openComment)" v-else> <i style="font-size: 14px"
-                                                     class="el-icon-star-off">{{openComment.likeCount}}</i></a>
+                                                            class="el-icon-star-off">{{openComment.likeCount}}</i></a>
           </p>
         </div>
       </div>
@@ -154,11 +156,11 @@
           <p style="font-size: 15px;">{{item.user.userName}}</p>
           <p style="font-size: 14px;" v-html="item.commentInfo"></p>
 
-          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{item.commentTime}}
+          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{item.commentTimeDiffer}}
             <a @click="likeComment(item)" v-if="item.isCommentLike"> <i style="font-size: 14px"
-                                                                                      class="el-icon-star-on">{{item.likeCount}}</i></a>
+                                                                        class="el-icon-star-on">{{item.likeCount}}</i></a>
             <a @click="likeComment(item)" v-else> <i style="font-size: 14px"
-                                                            class="el-icon-star-off">{{item.likeCount}}</i></a>
+                                                     class="el-icon-star-off">{{item.likeCount}}</i></a>
           </p>
         </div>
       </div>
@@ -168,11 +170,15 @@
 
 <script>
   import api from "../../api/api";
+  import BlogImgSwiper from "./blogImgSwiper";
 
   export default {
+    components: {BlogImgSwiper},
     name: 'blogDetail',
     data() {
       return {
+        openBlogId: '',
+        openImgId: '',
         chatHeight: '',
         imgWidth3: '',
         imgWidth2: '',
@@ -182,6 +188,11 @@
         blog: {},
         openCommentId: '',//当前打开的评论id
         openComment: null,//当前打开的评论对象
+      }
+    },
+    provide() {
+      return {
+        closeSwiper: this.closeSwiper
       }
     },
     mounted() {
@@ -201,6 +212,18 @@
       window.addEventListener('scroll', this.backScroll);
     },
     methods: {
+      closeSwiper() {
+        this.openBlogId = undefined;
+        document.body.style.overflow = "";
+      },
+      /*
+      打开图片
+     */
+      openImg(blogId, imgId) {
+        this.openBlogId = blogId;
+        this.openImgId = imgId;
+        document.body.style.overflow = "hidden";
+      },
       /**
        * 点赞
        * @param comment
@@ -296,7 +319,7 @@
 
 
 <style>
-  .mask{
+  .mask {
     position: fixed;
     z-index: 1000;
     top: 0;
@@ -305,6 +328,7 @@
     right: 0;
     touch-action: none;
   }
+
   .bottom {
     padding: 10px;
     background-color: #ffffff;

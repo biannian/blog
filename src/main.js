@@ -7,7 +7,9 @@ import weui from 'weui.js'
 import 'weui'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import qs from 'qs';
 
+Vue.prototype.$qs = qs;
 Vue.prototype.$weui = weui
 Vue.config.productionTip = false
 Vue.use(ElementUI);
@@ -15,6 +17,6 @@ Vue.use(ElementUI);
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

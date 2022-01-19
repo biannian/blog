@@ -6,10 +6,10 @@
       <div id="titleRecommend" @click="clickRecommend" class="active">推 荐</div>
     </div>
   </div>
-      <div id="follow" style="margin-top: 60px;" v-show="isShowFollow">
+      <div id="follow" style="margin-top: 60px;" v-if="isShowFollow">
         <blog-follow></blog-follow>
       </div>
-      <div id="recommend" style="margin-top: 60px;" v-show="!isShowFollow">
+      <div id="recommend" style="margin-top: 60px;" v-if="!isShowFollow">
         <some-blogs></some-blogs>
       </div>
     </div>
@@ -19,6 +19,7 @@
 <script>
   import SomeBlogs from "./someBlogs";
   import BlogFollow from "./blogFollow";
+
   export default {
     name: 'blogIndex',
     components: {BlogFollow, SomeBlogs},

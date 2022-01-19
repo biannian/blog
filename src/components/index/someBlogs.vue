@@ -3,10 +3,10 @@
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
         <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-          <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
+          <el-avatar :size="40"  :src="blog.user.userImgUrl"></el-avatar>
         </div>
         <p style="font-size: 15px; ">{{blog.user.userName}}</p>
-        <p style="font-size: 12px;color: #909399">{{blog.blogTime}} {{blog.blogFrom}}</p>
+        <p style="font-size: 12px;color: #909399">{{blog.blogTimeDiffer}} {{blog.blogFrom}}</p>
 
         <div @click="toDetail(blog.blogId)" style="text-align: left;margin: 5px 12px 0  12px; font-size: 15px"
              v-html="blog.blogInfo">
@@ -14,23 +14,21 @@
           <el-link v-if="blog.blogInfo.length > 80" type="primary" :underline="false">全文</el-link>
         </div>
         <div style="margin: 2px 10px 0  10px">
-          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
+          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length >= 3"
                     :src="item.imgUrl"
-                    :preview-src-list="srcList.get(blog.blogId)">
+                    @click="openImg(blog.blogId,index)">
           </el-image>
-          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
+          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth2+'px;height: '+imgWidth2+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length == 2"
-                    :src="item.imgUrl"
-                    :preview-src-list="srcList.get(blog.blogId)">
+                    :src="item.imgUrl" @click="openImg(blog.blogId,index)">
           </el-image>
-          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
+          <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth1+'px;height: '+imgWidth1+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length == 1"
-                    :src="item.imgUrl"
-                    :preview-src-list="srcList.get(blog.blogId)">
+                    :src="item.imgUrl" @click="openImg(blog.blogId,index)">
           </el-image>
         </div>
       </div>
@@ -44,14 +42,19 @@
       <div style="height: 10px;background-color: #f5f2f2">
       </div>
     </div>
+
+    <blog-img-swiper v-if="openBlogId" :srcList="srcList" :blogId="openBlogId" :imgId="openImgId"></blog-img-swiper>
+
   </div>
 </template>
 
 <script>
   import api from "../../api/api";
+  import BlogImgSwiper from "./blogImgSwiper";
 
   export default {
     name: 'someBlogs',
+    components: {BlogImgSwiper},
     data() {
       return {
         imgWidth3: '',
@@ -59,16 +62,38 @@
         imgWidth1: '',
         srcList: new Map(),
         blogs: [],
+        openBlogId: '',
+        openImgId: '',
       }
     },
-    watch: {},
+
     mounted() {
       this.imgWidth3 = (document.body.clientWidth - 40) / 3;
       this.imgWidth2 = (document.body.clientWidth - 40) / 2;
       this.imgWidth1 = document.body.clientWidth - 40;
       this.getBlogInfo();
-
-    }, methods: {
+    },
+    provide() {
+      return {
+        closeSwiper: this.closeSwiper
+      }
+    },
+    methods: {
+      closeSwiper() {
+        this.openBlogId = undefined;
+        document.body.style.overflow = "";
+      },
+      /*
+       打开图片
+      */
+      openImg(blogId, imgId) {
+        this.openBlogId = blogId;
+        this.openImgId = imgId;
+        document.body.style.overflow = "hidden";
+      },
+      /*
+      给微博点赞
+       */
       likeBolg(blog) {
         blog.liked = !blog.liked;
         if (blog.liked == false) {
@@ -117,7 +142,8 @@
 
 
 <style>
-  .el-image-viewer__mask{
-    opacity:1;
-}
+  .el-image-viewer__mask {
+    opacity: 1;
+  }
+
 </style>

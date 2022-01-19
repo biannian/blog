@@ -15,6 +15,15 @@ export default {
   },
   getBlogDetail(params) {
     return http.get(`${resquest}/Blog/getBlogDetail`, params)
+  },
+  getUserInfo(params) {
+    return http.post(`${resquest}/User/getUserInfo`, params)
+  },
+  login(params) {
+    return http.get(`${resquest}/User/login`, params)
+  },
+  verifyCode(params) {
+    return http.getExcel(`${resquest}/User/verifyCode`, params)
   }
 }
 
