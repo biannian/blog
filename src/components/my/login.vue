@@ -45,7 +45,13 @@
         <a role="button" class="weui-btn weui-btn_primary weui-btn" @click="login"
            href="javascript:" id="showTooltips">登录</a>
       </div>
-
+      <div role="alert" id="js_toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+          <p class="weui-toast__content">登录成功</p>
+        </div>
+      </div>
       <div class="weui-form__extra-area">
         <div class="weui-footer">
           <p class="weui-footer__text">DesignByBiannian © 2022-2022 biannian.top</p>
@@ -66,7 +72,7 @@
         account: "",
         password: "",
         yanzhengma: "",
-        verifycode:'',
+        verifycode: '',
       }
     },
     mounted() {
@@ -76,7 +82,7 @@
       initVerify() {
         api.verifyCode()
           .then((res) => {
-           this.verifycode = res.headers["verifycode"];
+            this.verifycode = res.headers["verifycode"];
             let blob = new Blob([res.data], {type: "image/png"});
             document.getElementById("yanzhengma").src = window.URL.createObjectURL(blob);
           })
@@ -94,7 +100,7 @@
           Message.warning("请输入验证码");
           return;
         }
-        if (this.verifycode.toLowerCase() != this.yanzhengma.toLowerCase()){
+        if (this.verifycode.toLowerCase() != this.yanzhengma.toLowerCase()) {
           Message.error("验证码错误");
           this.yanzhengma = "";
           this.initVerify();
@@ -107,6 +113,17 @@
         }
         api.login(param)
           .then((res) => {
+            if (res.data.code === -1) {
+              Message.error("账户或者密码错误");
+              this.yanzhengma = "";
+              this.initVerify();
+              return;
+            }
+            $("#js_toast").show();
+            setTimeout(()=>{
+              $("#js_toast").hide();
+              this.$router.push({name: 'myIndex'})
+            },1000)
 
           })
       },
