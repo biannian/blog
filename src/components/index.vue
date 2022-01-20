@@ -60,24 +60,26 @@
       }
     },
     mounted() {
-var _this = this;
+      var _this = this;
       $(function () {
         $('.weui-tabbar__item').on('click', function () {
           $(this).attr('aria-selected', 'true').addClass('weui-bar__item_on');
           $(this).siblings('.weui-bar__item_on').removeClass('weui-bar__item_on').attr('aria-selected', 'false');
           var panelId = '#' + $(this).attr('aria-controls');
-          if (panelId == "#panel1"){
+          if (panelId == "#panel1") {
             _this.isShowBlog = true;
-            _this. isShowMy= false;
-            _this.  isShowMessage= false;
-          }if (panelId == "#panel2"){
+            _this.isShowMy = false;
+            _this.isShowMessage = false;
+          }
+          if (panelId == "#panel2") {
             _this.isShowBlog = false;
-            _this. isShowMy= false;
-            _this.  isShowMessage= true;
-          }if (panelId == "#panel3"){
+            _this.isShowMy = false;
+            _this.isShowMessage = true;
+          }
+          if (panelId == "#panel3") {
             _this.isShowBlog = false;
-            _this. isShowMy= true;
-            _this.  isShowMessage= false;
+            _this.isShowMy = true;
+            _this.isShowMessage = false;
           }
         });
       });

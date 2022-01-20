@@ -119,10 +119,11 @@
               this.initVerify();
               return;
             }
+            sessionStorage["userId"] = res.data.result;
             $("#js_toast").show();
             setTimeout(()=>{
               $("#js_toast").hide();
-              this.$router.push({name: 'myIndex'})
+              this.$router.push({name: 'index'})
             },1000)
 
           })

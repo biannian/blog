@@ -9,6 +9,7 @@ import blogDetail from '../components/index/blogDetail'
 import messageIndex from '../components/message/messageIndex'
 import login from '../components/my/login.vue'
 import register from '../components/my/register.vue'
+import addBlog from '../components/index/addBlog.vue'
 
 Vue.use(Router)
 
@@ -74,6 +75,13 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register,
+      meta:{
+        tx:0
+      }
+    }, {
+      path: '/addBlog',
+      name: 'addBlog',
+      component: addBlog,
       meta:{
         tx:0
       }
