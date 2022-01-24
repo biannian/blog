@@ -2,11 +2,13 @@
   <div class="swiper" @click="close">
     <swiper class="item" :options="swiperOption" ref="mySwiper">
       <swiper-slide v-for="(src,index) in srcs" :key="index">
-        <el-image :src="src" >
+        <el-image :src="src">
         </el-image>
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
+    <i v-if="showDelete" style="font-size: 23px;text-align: center;position: initial;" class="el-icon-delete-solid"
+       @click.stop="deleteImg"> </i>
   </div>
 </template>
 
@@ -17,13 +19,15 @@
   export default {
     name: 'blogImgSwiper',
     props: {
+      isShowDelete: Boolean,
       srcList: Map,
       blogId: Number,
       imgId: Number,
     },
-    inject: ['closeSwiper'],
+    inject: ['closeSwiper', 'delete'],
     data() {
       return {
+        showDelete: false,
         srcs: [],
         srcMap: new Map,
         openBlogId: '',
@@ -33,7 +37,7 @@
           // 显示分页
           pagination: {
             el: ".swiper-pagination",
-            clickable: true //允许分页点击跳转
+            clickable: false ///不允许分页点击跳转
           },
         }
       }
@@ -51,7 +55,12 @@
       imgId(val) {
         this.openImgId = val;
         this.swiper.activeIndex = val;
-      }
+      },
+      srcs(val) {
+        if (val.length == 0) {
+          this.closeSwiper();
+        }
+      },
     },
     components: {swiper, swiperSlide},
     mounted() {
@@ -60,8 +69,12 @@
       this.openImgId = this.imgId;
       this.srcs = this.srcList.get(this.blogId);
       this.swiper.activeIndex = this.imgId;
+      this.showDelete = this.isShowDelete;
     },
     methods: {
+      deleteImg() {
+        this.delete(this.swiper.activeIndex);
+      },
       close() {
         this.closeSwiper();
       }

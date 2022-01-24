@@ -25,6 +25,10 @@ export default {
   },
   verifyCode(params) {
     return http.getExcel(`${resquest}/User/verifyCode`, params)
+  },
+
+  uploadBlog(params) {
+    return http.post(`${resquest}/Blog/uploadBlog`, params)
   }
 }
 
