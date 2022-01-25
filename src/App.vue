@@ -3,6 +3,21 @@
     <transition :name="SkipSwitchName">
       <router-view/>
     </transition>
+    <div role="alert" id="js_toast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content" id="js_toastInfo"></p>
+      </div>
+    </div>
+    <!--BEGIN toast-->
+    <div role="alert" id="warnToast" style="display: none;">
+      <div class="weui-mask_transparent"></div>
+      <div class="weui-toast">
+        <i class="weui-icon-warn weui-icon_toast"></i>
+        <p class="weui-toast__content" id="warnToastInfo"></p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +27,7 @@
     data() {
       return {
         SkipSwitchName: '',
+        toastMessage:'',
       }
     },
     watch: {

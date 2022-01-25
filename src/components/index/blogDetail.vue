@@ -17,9 +17,13 @@
     <!--下方三个按钮-->
     <div id="bottomButton" class="bottom">
       <a> <i style="font-size: 14px" class="el-icon-share">转发</i></a>
-      <a> <i style="font-size: 14px" class="el-icon-chat-dot-square">评论</i></a>
+      <a> <i style="font-size: 14px" class="el-icon-chat-dot-square" @click="comment">评论</i></a>
       <a @click="likeBolg(blog)" v-if="blog.liked"> <i style="font-size: 14px" class="el-icon-star-on">点赞</i></a>
       <a @click="likeBolg(blog)" v-else> <i style="font-size: 14px" class="el-icon-star-off">点赞</i></a>
+    </div>
+    <div id="comment" style="position: fixed;bottom: 0;z-index: 1002;width: 100%;display: none">
+      <el-input v-model="commentInfo" type="textarea" cols="2" style="width: 80%;"></el-input>
+      <el-button type="primary" size="small" @click="confirmComment">评 论</el-button>
     </div>
     <!--    页面屏蔽罩-->
     <div id="mask" class="mask" style="display: none" @click="closeChat"></div>
@@ -135,10 +139,11 @@
           <p style="font-size: 15px;">{{openComment.user.userName}}</p>
           <p style="font-size: 14px; ">{{openComment.commentInfo}}</p>
 
-          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{openComment.commentTimeDiffer}} <i
-            style="font-size: 14px;"
-            class="el-icon-chat-dot-square">{{commentMap.get(openComment.commentId) !=null ?
-            commentMap.get(openComment.commentId).length : null}}</i>
+          <p style="font-size: 12px;color: #909399;margin-left: 64px;padding: 5px; ">{{openComment.commentTimeDiffer}}
+            <i
+              style="font-size: 14px;"
+              class="el-icon-chat-dot-square">{{commentMap.get(openComment.commentId) !=null ?
+              commentMap.get(openComment.commentId).length : null}}</i>
             <a @click="likeComment(openComment)" v-if="openComment.isCommentLike"> <i style="font-size: 14px"
                                                                                       class="el-icon-star-on">{{openComment.likeCount}}</i></a>
             <a @click="likeComment(openComment)" v-else> <i style="font-size: 14px"
@@ -171,6 +176,7 @@
 <script>
   import api from "../../api/api";
   import BlogImgSwiper from "./blogImgSwiper";
+  import qs from 'qs';
 
   export default {
     components: {BlogImgSwiper},
@@ -188,6 +194,7 @@
         blog: {},
         openCommentId: '',//当前打开的评论id
         openComment: null,//当前打开的评论对象
+        commentInfo: '',//评论内容
       }
     },
     provide() {
@@ -196,22 +203,46 @@
       }
     },
     mounted() {
-      this.imgWidth3 = (document.body.clientWidth - 40) / 3;
-      this.imgWidth2 = (document.body.clientWidth - 40) / 2;
-      this.imgWidth1 = document.body.clientWidth - 40;
-      let params = {
-        "blogId": sessionStorage["blogId"]
-      }
-      api.getBlogDetail(params)
-        .then((res) => {
-          console.log(res)
-          this.getBlogSuccess(res);
-        })
-
-      this.$refs.chat.addEventListener('scroll', this.chatScroll);
-      window.addEventListener('scroll', this.backScroll);
+      this.init();
     },
     methods: {
+      /*
+      初始化
+      */
+      init() {
+        this.imgWidth3 = (document.body.clientWidth - 40) / 3;
+        this.imgWidth2 = (document.body.clientWidth - 40) / 2;
+        this.imgWidth1 = document.body.clientWidth - 40;
+        let params = {
+          "blogId": sessionStorage["blogId"]
+        }
+        api.getBlogDetail(params)
+          .then((res) => {
+            console.log(res)
+            this.getBlogSuccess(res);
+          })
+        this.$refs.chat.addEventListener('scroll', this.chatScroll);
+        window.addEventListener('scroll', this.backScroll);
+      },
+      confirmComment() {
+        let params = {
+          blogId: this.blog.blogId,
+          userId: sessionStorage['userId'],
+          commentInfo: this.commentInfo,
+          higherId: 0
+        }
+        api.addComment(qs.stringify(params))
+          .then(res => {
+            if (res.data.result == 1) {
+              this.init();
+              this.commentInfo = '';
+              $("#comment").hide();
+            }
+          })
+      },
+      /*
+      关闭图片
+      */
       closeSwiper() {
         this.openBlogId = undefined;
         document.body.style.overflow = "";
@@ -243,7 +274,17 @@
       //点赞
       likeBolg(blog) {
         blog.liked = !blog.liked;
-        api.likeBlog(blog.blogId);
+        let params = {
+          'blogId': blog.blogId,
+          'userId': sessionStorage['userId'],
+        }
+        if (blog.liked == false) {
+          api.notLikeBlog(params);
+          blog.likeCount--;
+        } else {
+          api.likeBlog(params);
+          blog.likeCount++;
+        }
       },
       //查询微博成功
       getBlogSuccess(res) {
@@ -271,6 +312,7 @@
         }
       },
       backScroll() {
+        $("#comment").hide();
         let scrollTop = document.documentElement.scrollTop;
         let opacity = 1 - scrollTop / 45 < 0 ? 0 : 1 - scrollTop / 45
         if (scrollTop > 0) {
@@ -303,7 +345,16 @@
         $("#mask").css("display", "block");
         $("#mask").css("overflow", "hidden");
       },
+      /*
+      评论
+       */
+      comment() {
+        $("#comment").show();
+        $("#mask").css("display", "block");
+        $("#mask").css("overflow", "hidden");
+      },
       closeChat() {
+        $("#comment").hide();
         $("#chat").css("height", "0");
         $("#background").css("filter", "");
         $("#topImg").css("filter", "");

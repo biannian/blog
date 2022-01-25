@@ -45,13 +45,6 @@
         <a role="button" class="weui-btn weui-btn_primary weui-btn" @click="login"
            href="javascript:" id="showTooltips">登录</a>
       </div>
-      <div role="alert" id="js_toast" style="display: none;">
-        <div class="weui-mask_transparent"></div>
-        <div class="weui-toast">
-          <i class="weui-icon-success-no-circle weui-icon_toast"></i>
-          <p class="weui-toast__content">登录成功</p>
-        </div>
-      </div>
       <div class="weui-form__extra-area">
         <div class="weui-footer">
           <p class="weui-footer__text">DesignByBiannian © 2022-2022 biannian.top</p>
@@ -63,7 +56,7 @@
 
 <script>
   import api from "../../api/api";
-  import {Message} from 'element-ui';
+  import showToast from "../../../static/js/util/toastMessage";
 
   export default {
     name: "login",
@@ -89,19 +82,19 @@
       },
       login() {
         if (this.account == "") {
-          Message.warning("请输入账户");
+          showToast.warn("请输入账户", 1000);
           return;
         }
         if (this.password == "") {
-          Message.warning("请输入密码");
+          showToast.warn("请输入密码", 1000);
           return;
         }
         if (this.yanzhengma == "") {
-          Message.warning("请输入验证码");
+          showToast.warn("请输入验证码", 1000);
           return;
         }
         if (this.verifycode.toLowerCase() != this.yanzhengma.toLowerCase()) {
-          Message.error("验证码错误");
+          showToast.warn("验证码错误", 1000);
           this.yanzhengma = "";
           this.initVerify();
           return;
@@ -114,18 +107,13 @@
         api.login(param)
           .then((res) => {
             if (res.data.code === -1) {
-              Message.error("账户或者密码错误");
+              showToast.warn("账户或者密码错误", 1000);
               this.yanzhengma = "";
               this.initVerify();
               return;
             }
             sessionStorage["userId"] = res.data.result;
-            $("#js_toast").show();
-            setTimeout(()=>{
-              $("#js_toast").hide();
-              this.$router.push({name: 'index'})
-            },1000)
-
+            showToast.success("登陆成功", 1000, "_this.$router.push({name: 'index'})",this);
           })
       },
       toRegister() {

@@ -96,16 +96,18 @@
        */
       likeBolg(blog) {
         blog.liked = !blog.liked;
-        if (blog.liked == false) {
-          blog.likeCount--;
-        } else {
-          blog.likeCount++;
-        }
         let params = {
           'blogId': blog.blogId,
-          'userId': '',
+          'userId': sessionStorage['userId'],
         }
-        api.likeBlog(params);
+        if (blog.liked == false) {
+          api.notLikeBlog(params);
+          blog.likeCount--;
+        } else {
+          api.likeBlog(params);
+          blog.likeCount++;
+        }
+
       },
       //到详情页面
       toDetail(blogId) {

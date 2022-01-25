@@ -19,21 +19,23 @@
       <div style="height: 30px">
         <i style="font-size: 12px;" class="el-icon-s-promotion" @click=""> 添加位置</i>
       </div>
-      <div style="margin-top:15px;">
-        <span v-for="(item,index) in blog.blogImg">
-          <el-image fit="cover" :key="index"
-                    :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px;'"
-                    v-if="item.imgUrl !='' "
-                    :src="item.imgUrl"
-                    @click="openImg(index)">
-          </el-image>
-        </span>
-        <el-image fit="cover"
-                  :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
-                  v-if="blog.blogImg.length <9"
-                  src="../../../static/images/addImg.png"
-                  @click="uploadImg">
+      <div style="margin-top:15px;float: left">
+        <el-image fit="cover" :key="index" v-for="(item,index) in blog.blogImg"
+                  :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px;'"
+                  v-if="item.imgUrl !='' "
+                  :src="item.imgUrl"
+                  @click="openImg(index)">
         </el-image>
+        <el-image fit="cover" v-if="blog.blogImg.length <9" @click="upload"
+                  :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
+                  src="../../../static/images/addImg.png">
+        </el-image>
+        <el-upload v-show="false"
+                   action
+                   :on-change="otherSectionFile">
+          <el-button size="small" id="uploadImg" type="primary">点击上传</el-button>
+        </el-upload>
+
       </div>
     </div>
 
@@ -44,12 +46,14 @@
   import BlogImgSwiper from "./blogImgSwiper";
   import api from "../../api/api";
   import qs from 'qs';
+  import showToast from "../../../static/js/util/toastMessage";
 
   export default {
     components: {BlogImgSwiper},
     name: "addBlog",
     data() {
       return {
+        fileList: [],
         deleteImgs: '',
         isShowImg: false,
         openImgId: undefined,
@@ -71,14 +75,52 @@
       this.imgWidth3 = (document.body.clientWidth - 40) / 3;
     },
     methods: {
+      upload() {
+        $("#uploadImg").click();
+      },
+      otherSectionFile(file) {
+        if (file.status !== 'ready') return;
+        const typeArr = ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'];
+        const isJPG = typeArr.indexOf(file.raw.type) !== -1;
+        const isLt3M = file.size / 1024 / 1024 < 21;
+        if (!isJPG) {
+          showToast.warn("只能上传照片!")
+          return;
+        }
+        if (!isLt3M) {
+          showToast.warn("上传图片大小不能超过 20MB")
+          return;
+        }
+        const formData = new FormData();
+        formData.append('picture', file.raw);
+        api.pictureAdd(formData)
+          .then(res => {
+            this.blog.blogImg.push({
+              imgId: Number,
+              imgUrl: res.data.result,
+              blogId: Number
+            });
+            if (this.srcList.get(0)) {
+              this.srcList.get(0).push(res.data.result);
+            } else {
+              this.srcList.set(0, [res.data.result]);
+            }
+          })
+          .catch(res => {
+            showToast.warn("上传图片错误")
+          })
+      },
       delete(imgId) {
         this.blog.blogImg.splice(imgId, 1);
         this.srcList.get(0).splice(imgId, 1);
       },
       confirm() {
+        this.blog.blogAuthorId = sessionStorage['userId'];
         api.uploadBlog(qs.stringify(this.blog, {arrayFormat: 'indices', allowDots: true}))
           .then((res) => {
-            console.log(res)
+            if (res.data.code == 200){
+              showToast.success("发送成功！",1000,"_this.$router.push({name: 'index'})",this);
+            }
           })
       },
       back() {
@@ -97,18 +139,7 @@
         this.openImgId = imgId;
         document.body.style.overflow = "hidden";
       },
-      uploadImg() {
-        this.blog.blogImg.push({
-          imgId: Number,
-          imgUrl: "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
-          blogId: Number
-        });
-        if (this.srcList.get(0)) {
-          this.srcList.get(0).push('https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg');
-        } else {
-          this.srcList.set(0, ['https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg']);
-        }
-      }
+
     }
   }
 </script>

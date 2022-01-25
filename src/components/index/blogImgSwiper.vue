@@ -96,8 +96,15 @@
   }
 
   .swiper-container {
-    position: initial;
+    position: relative ;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
+  /*.swiper-container item swiper-container-initialized swiper-container-horizontal {*/
+  /*  position: relative ;*/
+  /*  top: 50%;*/
+  /*  transform: translateY(-50%);*/
+  /*}*/
 
 </style>
