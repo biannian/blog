@@ -112,6 +112,18 @@
               this.initVerify();
               return;
             }
+            if (res.data.code === -2) {
+              showToast.warn("密码错误次数过多,已禁用", 1000);
+              this.yanzhengma = "";
+              this.initVerify();
+              return;
+            }
+            if (res.data.code === -3) {
+              showToast.warn("密码错误,剩余次数"+(5-Number(res.data.msg)), 1000);
+              this.yanzhengma = "";
+              this.initVerify();
+              return;
+            }
             sessionStorage["userId"] = res.data.result;
             showToast.success("登陆成功", 1000, "_this.$router.push({name: 'index'})",this);
           })

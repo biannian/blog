@@ -40,7 +40,7 @@
       <div>
         <div>
           <div v-if="blog.user">
-            <div style="width: 42px;padding: 0 10px 0 15px;float: left">
+            <div v-if="blog.user.userImgUrl" style="width: 42px;padding: 0 10px 0 15px;float: left">
               <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{blog.user.userName}}</p>
@@ -261,7 +261,13 @@
        */
       likeComment(comment) {
         comment.isCommentLike = !comment.isCommentLike;
-        api.likeComment(comment.commentId);
+        let params = {
+          comment: comment
+        }
+        api.likeComment(params)
+          .then((res) => {
+            console.log(res);
+          });
       },
 
       isShowComment(commentId) {
@@ -312,7 +318,6 @@
         }
       },
       backScroll() {
-        $("#comment").hide();
         let scrollTop = document.documentElement.scrollTop;
         let opacity = 1 - scrollTop / 45 < 0 ? 0 : 1 - scrollTop / 45
         if (scrollTop > 0) {

@@ -47,6 +47,7 @@
   import api from "../../api/api";
   import qs from 'qs';
   import showToast from "../../../static/js/util/toastMessage";
+  import dialog from "../../../static/js/util/dialogs";
 
   export default {
     components: {BlogImgSwiper},
@@ -73,8 +74,18 @@
     },
     mounted() {
       this.imgWidth3 = (document.body.clientWidth - 40) / 3;
+      if (!sessionStorage['userId']) {
+        dialog.showConfirm("提示信息", "您尚未登录，请登录", "取消", "确定",
+          "_this.dialogCancel()", "_this.dialogConfirm()",this);
+      }
     },
     methods: {
+      dialogCancel(){
+        history.back();
+      },
+      dialogConfirm(){
+        this.$router.push({name: 'login'})
+      },
       upload() {
         $("#uploadImg").click();
       },
@@ -118,8 +129,8 @@
         this.blog.blogAuthorId = sessionStorage['userId'];
         api.uploadBlog(qs.stringify(this.blog, {arrayFormat: 'indices', allowDots: true}))
           .then((res) => {
-            if (res.data.code == 200){
-              showToast.success("发送成功！",1000,"_this.$router.push({name: 'index'})",this);
+            if (res.data.code == 200) {
+              showToast.success("发送成功！", 1000, "_this.$router.push({name: 'index'})", this);
             }
           })
       },

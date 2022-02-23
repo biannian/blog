@@ -18,6 +18,17 @@
         <p class="weui-toast__content" id="warnToastInfo"></p>
       </div>
     </div>
+    <div class="js_dialog" role="dialog"  aria-hidden="true" aria-modal="true" aria-labelledby="js_title1" id="iosDialog" style="display: none;">
+      <div class="weui-mask"></div>
+      <div class="weui-dialog">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title" id="js_title1"></strong></div>
+        <div class="weui-dialog__bd" id="dialogMessage"></div>
+        <div class="weui-dialog__ft">
+          <a role="button" href="javascript:" class="weui-dialog__btn weui-dialog__btn_default" id="cancel" ></a>
+          <a role="button" href="javascript:" class="weui-dialog__btn weui-dialog__btn_primary" id="confirm"></a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,6 +40,8 @@
         SkipSwitchName: '',
         toastMessage:'',
       }
+    },
+    methods:{
     },
     watch: {
       $route(to, from) {

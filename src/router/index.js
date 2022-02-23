@@ -10,6 +10,7 @@ import messageIndex from '../components/message/messageIndex'
 import login from '../components/my/login.vue'
 import register from '../components/my/register.vue'
 import addBlog from '../components/index/addBlog.vue'
+import blogImgSwiper from '../components/index/blogImgSwiper.vue'
 
 Vue.use(Router)
 
@@ -82,6 +83,13 @@ export default new Router({
       path: '/addBlog',
       name: 'addBlog',
       component: addBlog,
+      meta:{
+        tx:0
+      }
+    }, {
+      path: '/blogImgSwiper',
+      name: 'blogImgSwiper',
+      component: blogImgSwiper,
       meta:{
         tx:0
       }

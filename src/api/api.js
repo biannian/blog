@@ -4,8 +4,8 @@ import http from '../../static/js/util/http'
  *  @parms resquest 请求地址
  *  @param '/testIp'代表vue-cil中config，index.js中配置的代理
  */
-const request = "http://localhost:8083"
-// const resquest = "http://121.5.222.148:8083"
+  const request = "http://localhost:8083"
+ //const request = "http://121.5.222.148:8083"
 // get请求
 export default {
   getBlogInfo(params) {
@@ -41,7 +41,7 @@ export default {
   addComment(params){
     return http.post(`${request}/Comment/addComment`, params)
   },likeComment(params){
-    return http.post(`${request}/Comment/likeComment`, params)
+    return http.get(`${request}/Comment/likeComment`, params)
   }
 }
 
