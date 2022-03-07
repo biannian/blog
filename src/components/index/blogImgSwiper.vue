@@ -2,7 +2,7 @@
   <div class="swiper" @click="close">
     <swiper class="item" :options="swiperOption" ref="mySwiper">
       <swiper-slide v-for="(src,index) in srcs" :key="index">
-        <el-image :src="src">
+        <el-image :src="currentIp+src">
         </el-image>
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -15,7 +15,7 @@
 <script>
   import {swiper, swiperSlide} from "vue-awesome-swiper";
   import "swiper/dist/css/swiper.css";
-
+  import api from "../../api/api";
   export default {
     name: 'blogImgSwiper',
     props: {
@@ -27,6 +27,7 @@
     inject: ['closeSwiper', 'delete'],
     data() {
       return {
+                currentIp:api.currentIp(),
         showDelete: false,
         srcs: [],
         srcMap: new Map,

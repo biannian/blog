@@ -3,7 +3,7 @@
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
         <div style="width: 42px;padding: 0 10px 0 15px;float: left">
-          <el-avatar :size="40"  :src="blog.user.userImgUrl"></el-avatar>
+          <el-avatar :size="40"  :src="currentIp+blog.user.userImgUrl"></el-avatar>
         </div>
         <p style="font-size: 15px; ">{{blog.user.userName}}</p>
         <p style="font-size: 12px;color: #909399">{{blog.blogTimeDiffer}} {{blog.blogFrom}}</p>
@@ -17,18 +17,18 @@
           <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length >= 3"
-                    :src="item.imgUrl"
+                    :src="currentIp+item.imgUrl"
                     @click="openImg(blog.blogId,index)">
           </el-image>
           <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth2+'px;height: '+imgWidth2+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length == 2"
-                    :src="item.imgUrl" @click="openImg(blog.blogId,index)">
+                    :src="currentIp+item.imgUrl" @click="openImg(blog.blogId,index)">
           </el-image>
           <el-image v-for="(item,index) in blog.blogImg" fit="cover" :key="index"
                     :style="'padding-left: 5px;width: '+imgWidth1+'px;height: '+imgWidth1+'px'"
                     v-if="item.imgUrl !=null && blog.blogImg.length == 1"
-                    :src="item.imgUrl" @click="openImg(blog.blogId,index)">
+                    :src="currentIp+item.imgUrl" @click="openImg(blog.blogId,index)">
           </el-image>
         </div>
       </div>
@@ -57,6 +57,7 @@
     components: {BlogImgSwiper},
     data() {
       return {
+         currentIp:api.currentIp(),
         imgWidth3: '',
         imgWidth2: '',
         imgWidth1: '',

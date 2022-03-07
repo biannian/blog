@@ -60,7 +60,7 @@
         isShowMessage: false,
       }
     },
-    mounted() {
+    mounted() { 
       var _this = this;
       $(function () {
         $('.weui-tabbar__item').on('click', function () {

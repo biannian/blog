@@ -27,7 +27,7 @@
     name: 'blogIndex',
     components: {BlogFollow, SomeBlogs},
     data() {
-      return {
+      return { 
         isShowFollow: false,
       }
     },

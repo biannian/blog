@@ -20,7 +20,8 @@
         <i style="font-size: 12px;" class="el-icon-s-promotion" @click=""> 添加位置</i>
       </div>
       <div style="margin-top:15px;float: left">
-        <el-image fit="cover" :key="index" v-for="(item,index) in blog.blogImg"
+        <el-image fit="cover" :key="index" 
+                  v-for="(item,index) in blog.blogImg"
                   :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px;'"
                   v-if="item.imgUrl !='' "
                   :src="item.imgUrl"

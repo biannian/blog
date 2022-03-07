@@ -8,7 +8,7 @@
         class="el-icon-arrow-left"></i>首页
       </div>
       <div v-if="blog.user" style="width: 25px;margin-right: auto;margin-left: auto;padding-top: 3px">
-        <el-avatar :size="37" :src="blog.user.userImgUrl"></el-avatar>
+        <el-avatar :size="37" :src="currentIp+blog.user.userImgUrl"></el-avatar>
       </div>
       <el-button style="float: right;margin-top: -35px;margin-right: 10px" type="warning" size="mini"
                  icon="el-icon-plus" round>关注
@@ -41,7 +41,7 @@
         <div>
           <div v-if="blog.user">
             <div v-if="blog.user.userImgUrl" style="width: 42px;padding: 0 10px 0 15px;float: left">
-              <el-avatar :size="40" :src="blog.user.userImgUrl"></el-avatar>
+              <el-avatar :size="40" :src="currentIp+blog.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{blog.user.userName}}</p>
             <p style="font-size: 12px;color: #909399">{{blog.blogTimeDiffer}} {{blog.blogFrom}}</p>
@@ -53,19 +53,19 @@
               <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
                         :style="'padding-left: 5px;width: '+imgWidth3+'px;height: '+imgWidth3+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length >= 3"
-                        :src="item.imgUrl"
+                        :src="currentIp+item.imgUrl"
                         @click="openImg(blog.blogId,index)">
               </el-image>
               <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
                         :style="'padding-left: 5px;width: '+imgWidth2+'px;height: '+imgWidth2+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length == 2"
-                        :src="item.imgUrl"
+                        :src="currentIp+item.imgUrl"
                         @click="openImg(blog.blogId,index)">
               </el-image>
               <el-image v-for="(item,index) in blog.blogImg" fit="cover" :id="'img'+index" :key="index"
                         :style="'padding-left: 5px;width: '+imgWidth1+'px;height: '+imgWidth1+'px'"
                         v-if="item.imgUrl !=null && blog.blogImg.length == 1"
-                        :src="item.imgUrl"
+                        :src="currentIp+item.imgUrl"
                         @click="openImg(blog.blogId,index)">
               </el-image>
             </div>
@@ -88,7 +88,7 @@
           <div v-for="comm in blog.comment" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0"
                v-if="comm.higherId == 0">
             <div style="width: 42px;padding:2px 10px 0 15px;float: left">
-              <el-avatar :size="40" :src="comm.user.userImgUrl"></el-avatar>
+              <el-avatar :size="40" :src="currentIp+comm.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{comm.user.userName}}</p>
             <p style="font-size: 14px; ">{{comm.commentInfo}}</p>
@@ -134,7 +134,7 @@
       <div style="margin: 50px 0 10px 0;">
         <div v-if="openComment">
           <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
-            <el-avatar :size="40" :src="openComment.user.userImgUrl"></el-avatar>
+            <el-avatar :size="40" :src="currentIp+openComment.user.userImgUrl"></el-avatar>
           </div>
           <p style="font-size: 15px;">{{openComment.user.userName}}</p>
           <p style="font-size: 14px; ">{{openComment.commentInfo}}</p>
@@ -156,7 +156,7 @@
       <div style="margin: 20px 0 10px 0;">
         <div v-for="item in commentMap.get(openCommentId)" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0">
           <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
-            <el-avatar :size="40" :src="item.user.userImgUrl"></el-avatar>
+            <el-avatar :size="40" :src="currentIp+item.user.userImgUrl"></el-avatar>
           </div>
           <p style="font-size: 15px;">{{item.user.userName}}</p>
           <p style="font-size: 14px;" v-html="item.commentInfo"></p>
@@ -183,6 +183,7 @@
     name: 'blogDetail',
     data() {
       return {
+        currentIp:api.currentIp(),
         openBlogId: '',
         openImgId: '',
         chatHeight: '',
@@ -202,7 +203,7 @@
         closeSwiper: this.closeSwiper
       }
     },
-    mounted() {
+    mounted() { 
       this.init();
     },
     methods: {

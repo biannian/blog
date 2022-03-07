@@ -5,9 +5,12 @@ import http from '../../static/js/util/http'
  *  @param '/testIp'代表vue-cil中config，index.js中配置的代理
  */
 const request = "http://localhost:8083"
-//const request = "http://121.5.222.148:8083"
+//const request = "http://121.5.222.148:8083" 
 // get请求
 export default {
+  currentIp(){
+    return `${request}`;
+  },
   /**
    * 获取微博信息
    * @param params
@@ -115,5 +118,11 @@ export default {
   saveGlance(params) {
     return http.get(`${request}/User/saveGlance`, params)
   },
+  /**
+   * 注冊
+   */
+   register(params) {
+    return http.get(`${request}/User/register`, params)
+  }, 
 }
 
