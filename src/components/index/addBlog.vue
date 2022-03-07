@@ -48,7 +48,7 @@
   import qs from 'qs';
   import showToast from "../../../static/js/util/toastMessage";
   import dialog from "../../../static/js/util/dialogs";
-
+  import utils from "../../../static/js/util/util";
   export default {
     components: {BlogImgSwiper},
     name: "addBlog",
@@ -127,6 +127,7 @@
       },
       confirm() {
         this.blog.blogAuthorId = sessionStorage['userId'];
+        this.blog.blogFrom = "来自"+utils.getBrowserInfo()[0];
         api.uploadBlog(qs.stringify(this.blog, {arrayFormat: 'indices', allowDots: true}))
           .then((res) => {
             if (res.data.code == 200) {

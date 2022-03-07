@@ -45,9 +45,10 @@
 
 <script>
   import MessageIndex from "./message/messageIndex";
-
   import myIndex from './my/myIndex.vue'
   import SomeBolgs from "./index/blogIndex";
+  import api from "../api/api";
+  import utils from "../../static/js/util/util";
 
   export default {
     components: {MessageIndex, SomeBolgs, myIndex},
@@ -83,6 +84,19 @@
           }
         });
       });
+      this.saveGlance();
+
+    },
+    methods: {
+      saveGlance() {
+        let params = {
+          browserName:utils.getBrowserInfo()[0],
+          glanceIp:returnCitySN["cip"],
+          city:returnCitySN["cname"]
+        }
+        api.saveGlance(params)
+        .then((res)=>{})
+      },
 
     }
   }
