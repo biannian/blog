@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '../components/index'
 import myIndex from '../components/my/myIndex'
+import myBlog from '../components/my/myBlog'
 import someBlogs from '../components/index/someBlogs'
 import blogIndex from '../components/index/blogIndex.vue'
 import blogFollow from '../components/index/blogFollow'
@@ -21,7 +22,7 @@ export default new Router({
       name: 'index',
       component: index,
       meta:{
-        tx:2
+        tx:3
       }
     },
     {
@@ -29,21 +30,28 @@ export default new Router({
       name: 'myIndex',
       component: myIndex,
       meta:{
-        tx:2
+        tx:3
+      }
+    }, {
+      path: '/myBlog',
+      name: 'myBlog',
+      component: myBlog,
+      meta:{
+        tx:1
       }
     }, {
       path: '/someBlogs',
       name: 'someBlogs',
       component: someBlogs,
       meta:{
-        tx:1
+        tx:2
       }
     }, {
       path: '/blogIndex',
       name: 'blogIndex',
       component: blogIndex,
       meta:{
-        tx:2
+        tx:3
       }
     }, {
       path: '/blogFollow',
@@ -55,7 +63,7 @@ export default new Router({
       name: 'blogDetail',
       component: blogDetail,
       meta:{
-        tx:1
+        tx:2
       }
     },
     {
@@ -63,35 +71,35 @@ export default new Router({
       name: 'messageIndex',
       component: messageIndex,
       meta:{
-        tx:2
+        tx:3
       }
     }, {
       path: '/login',
       name: 'login',
       component: login,
       meta:{
-        tx:1
+        tx:2
       }
     }, {
       path: '/register',
       name: 'register',
       component: register,
       meta:{
-        tx:0
+        tx:1
       }
     }, {
       path: '/addBlog',
       name: 'addBlog',
       component: addBlog,
       meta:{
-        tx:0
+        tx:1
       }
     }, {
       path: '/blogImgSwiper',
       name: 'blogImgSwiper',
       component: blogImgSwiper,
       meta:{
-        tx:0
+        tx:1
       }
     },
   ]

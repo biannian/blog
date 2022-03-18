@@ -2,7 +2,7 @@
   <div>
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
-        <div style="width: 42px;padding: 0 10px 0 15px;float: left">
+        <div style="width: 42px;padding: 0 10px 0 15px;float: left" @click="toMyBlog">
           <el-avatar :size="40"  :src="currentIp+blog.user.userImgUrl"></el-avatar>
         </div>
         <p style="font-size: 15px; ">{{blog.user.userName}}</p>
@@ -80,6 +80,16 @@
       }
     },
     methods: {
+      /*
+      点击头像打开个人主页
+       */
+      toMyBlog(){
+        this.$router.push({name: 'myBlog'})
+      },
+
+      /*
+      关闭弹窗
+      */
       closeSwiper() {
         this.openBlogId = undefined;
         document.body.style.overflow = "";

@@ -1,23 +1,20 @@
 <template>
-<div>
- 
-</div>
+  <div>
+
+
+  </div>
 </template>
 
 <script>
-
   export default {
-
-    name: 'messageIndex',
+    name: "myBlog.vue",
     data() {
-      return {
-
+    },
+    methods: {
+      back() {
+        history.back();
       }
-    },
-
-    mounted() {
-    },
-
+    }
   }
 </script>
 

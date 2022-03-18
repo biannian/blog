@@ -7,7 +7,7 @@
       <div @click="toBack" style="float: left;margin-left:15px;font-size: 14px;margin-top: 15px"><i
         class="el-icon-arrow-left"></i>首页
       </div>
-      <div v-if="blog.user" style="width: 25px;margin-right: auto;margin-left: auto;padding-top: 3px">
+      <div v-if="blog.user" style="width: 25px;margin-right: auto;margin-left: auto;padding-top: 3px" @click="toMyBlog">
         <el-avatar :size="37" :src="currentIp+blog.user.userImgUrl"></el-avatar>
       </div>
       <el-button style="float: right;margin-top: -35px;margin-right: 10px" type="warning" size="mini"
@@ -40,7 +40,7 @@
       <div>
         <div>
           <div v-if="blog.user">
-            <div v-if="blog.user.userImgUrl" style="width: 42px;padding: 0 10px 0 15px;float: left">
+            <div v-if="blog.user.userImgUrl" style="width: 42px;padding: 0 10px 0 15px;float: left"  @click="toMyBlog">
               <el-avatar :size="40" :src="currentIp+blog.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{blog.user.userName}}</p>
@@ -87,7 +87,7 @@
         <div style="margin: 10px 0 10px 0;">
           <div v-for="comm in blog.comment" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0"
                v-if="comm.higherId == 0">
-            <div style="width: 42px;padding:2px 10px 0 15px;float: left">
+            <div style="width: 42px;padding:2px 10px 0 15px;float: left"  @click="toMyBlog">
               <el-avatar :size="40" :src="currentIp+comm.user.userImgUrl"></el-avatar>
             </div>
             <p style="font-size: 15px; ">{{comm.user.userName}}</p>
@@ -133,7 +133,7 @@
       </div>
       <div style="margin: 50px 0 10px 0;">
         <div v-if="openComment">
-          <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
+          <div style="width: 42px;padding: 2px 10px 0 15px;float: left"  @click="toMyBlog">
             <el-avatar :size="40" :src="currentIp+openComment.user.userImgUrl"></el-avatar>
           </div>
           <p style="font-size: 15px;">{{openComment.user.userName}}</p>
@@ -155,7 +155,7 @@
       </div>
       <div style="margin: 20px 0 10px 0;">
         <div v-for="item in commentMap.get(openCommentId)" style="border-bottom: 1px solid #e6e6e6;margin: 5px 0 0 0">
-          <div style="width: 42px;padding: 2px 10px 0 15px;float: left">
+          <div style="width: 42px;padding: 2px 10px 0 15px;float: left"  @click="toMyBlog">
             <el-avatar :size="40" :src="currentIp+item.user.userImgUrl"></el-avatar>
           </div>
           <p style="font-size: 15px;">{{item.user.userName}}</p>
@@ -183,7 +183,7 @@
     name: 'blogDetail',
     data() {
       return {
-        currentIp:api.currentIp(),
+        currentIp: api.currentIp(),
         openBlogId: '',
         openImgId: '',
         chatHeight: '',
@@ -203,10 +203,16 @@
         closeSwiper: this.closeSwiper
       }
     },
-    mounted() { 
+    mounted() {
       this.init();
     },
     methods: {
+      /*
+       点击头像打开个人主页
+     */
+      toMyBlog() {
+        this.$router.push({name: 'myBlog'})
+      },
       /*
       初始化
       */
