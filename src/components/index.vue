@@ -20,19 +20,20 @@
             <div id="t1_tips" aria-hidden="true" style="display: inline-block; position: relative;">
 
               <img src="../../static/images/index.png" alt="" class="weui-tabbar__icon">
-              <!--              <span class="weui-badge" style="position: absolute; top: -2px; right: -13px;">8</span>-->
+
             </div>
             <p id="t1_title" aria-hidden="true" class="weui-tabbar__label">微博</p>
           </div>
           <div id="tab2" role="tab" aria-labelledby="t2_title" aria-selected="false" aria-controls="panel2"
                class="weui-tabbar__item">
-            <img alt="" class="weui-tabbar__icon">
+            <img src="../../static/images/message.png" alt="" class="weui-tabbar__icon">
+
             <p aria-hidden="true" id="t2_title" class="weui-tabbar__label">消息</p>
           </div>
           <div id="tab3" role="tab" aria-labelledby="t3_title" aria-describedby="t3_tips" aria-selected="false"
                aria-controls="panel3" class="weui-tabbar__item">
             <div id="t3_tips" aria-hidden="true" style="display: inline-block; position: relative;">
-              <img alt="" class="weui-tabbar__icon">
+              <img src="../../static/images/my.png" alt="" class="weui-tabbar__icon">
               <!--              <span class="weui-badge weui-badge_dot" role="img" alt="new" style="position: absolute; top: 0; right: -6px;"></span>-->
             </div>
             <p id="t3_title" aria-hidden="true" class="weui-tabbar__label">我</p>
@@ -60,7 +61,7 @@
         isShowMessage: false,
       }
     },
-    mounted() { 
+    mounted() {
       var _this = this;
       $(function () {
         $('.weui-tabbar__item').on('click', function () {

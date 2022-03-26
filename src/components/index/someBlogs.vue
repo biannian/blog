@@ -2,7 +2,7 @@
   <div>
     <div v-for="(blog,key) in blogs" style="margin-top: 10px">
       <div>
-        <div style="width: 42px;padding: 0 10px 0 15px;float: left" @click="toMyBlog">
+        <div style="width: 42px;padding: 0 10px 0 15px;float: left" @click="toMyBlog(blog.user.userId)">
           <el-avatar :size="40"  :src="currentIp+blog.user.userImgUrl"></el-avatar>
         </div>
         <p style="font-size: 15px; ">{{blog.user.userName}}</p>
@@ -55,9 +55,12 @@
   export default {
     name: 'someBlogs',
     components: {BlogImgSwiper},
+    props: {
+      userId: Number
+    },
     data() {
       return {
-         currentIp:api.currentIp(),
+        currentIp:api.currentIp(),
         imgWidth3: '',
         imgWidth2: '',
         imgWidth1: '',
@@ -83,8 +86,8 @@
       /*
       点击头像打开个人主页
        */
-      toMyBlog(){
-        this.$router.push({name: 'myBlog'})
+      toMyBlog(userId){
+        this.$router.push({name: 'myBlog', params: {userId: userId}})
       },
 
       /*
@@ -126,7 +129,10 @@
         this.$router.push({name: 'blogDetail', params: {blogId: blogId}})
       },
       getBlogInfo() {
-        api.getBlogInfo()
+        let params={
+          userId:this.userId
+        }
+        api.getBlogInfo(params)
           .then((res) => {
             if (res.data.code == 200) {
               this.getBlogSuccess(res);

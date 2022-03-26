@@ -13,13 +13,11 @@
       </div>
     </div>
     <!--    头像 已登录-->
-    <div
-      style="
+    <div  style="
         border-bottom: 1px solid #e5e5e5;
         height: 180px;
         background-color: #fafafa;
-      "
-    >
+      " >
       <div style="padding: 60px 0px 0 30px">
         <el-avatar
           style="float: left"
@@ -153,12 +151,7 @@
     <br />
     <br />
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    
+
     <br />
   </div>
 </template>
@@ -194,7 +187,7 @@ export default {
       let data = { userId: this.userId };
       api.getUserInfo(qs.stringify(data)).then((res) => {
         if (res.data.result.length === 1) {
-          this.user = res.data.result[0]; 
+          this.user = res.data.result[0];
         } else if (res.data.result.length > 1) {
           Message.error("查询用户信息出错，请联系管理员");
         } else {
