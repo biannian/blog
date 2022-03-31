@@ -267,14 +267,20 @@
        * @param comment
        */
       likeComment(comment) {
-        comment.isCommentLike = !comment.isCommentLike;
-        let params = {
-          comment: comment
-        }
-        api.likeComment(params)
-          .then((res) => {
-            console.log(res);
-          });
+        this.blog.comment.forEach((cot)=>{
+          if(cot.commentId == comment.commentId ){
+            console.log(cot)
+            cot.commentLike= !comment.commentLike;
+          }
+        })
+        // let params = {
+        //   commentId: comment,
+        //   userId:
+        // }
+        // api.likeComment(params)
+        //   .then((res) => {
+        //     console.log(res);
+        //   });
       },
 
       isShowComment(commentId) {
